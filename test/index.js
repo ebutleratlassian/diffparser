@@ -278,7 +278,7 @@ Index: text.txt
     expect(f.chunks[0].changes, 'to have length', 1);
   });
 
-  it('should parse file names for n new empty file', () => {
+  it('should parse file names for a new empty file', () => {
     const diff = `
 diff --git a/newFile.txt b/newFile.txt
 new file mode 100644
@@ -412,5 +412,20 @@ index 7147fac..1c70551 100644
     expect(c2.changes, 'to contain', { content: '       if (todo.completed) {', type: 'normal', normal: true, position: 22, oldLine: 98, newLine: 99 });
   });
 
+  it('should flag binary files', () => {
+    const diff = `
+diff --git a/image_or_binary@2x.png b/image_or_binary@2x.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..7f3e5ba79d8a25285ac26ad9df46f25ede4e24f9
+GIT binary patch
+literal 30728
+zcmeFZXIN8P+bv8H5D\`&nTd9JAf\`D}CSODot?*XZyccg?ODgp{f?<g%&Lk}cCC>!a$
+zw}8?KgieG2Im_+d&wF0C*Z1T6{I2H@Txn~~a?g2>dyFwx_)\`rf>I>H|5D^hkD?fRx
+`;
+    const files = parse(diff);
+    const file = files[0];
+
+    expect(file.isBinary, 'to be true');
+  });
 });
 

@@ -112,9 +112,14 @@ export default function (input, opts = {}) {
     });
   }
 
+  function binaryFile() {
+    file.isBinary = true;
+  }
+
   const schema = [
     [/^\s+/, normal],
     [/^diff\s/, start],
+    [/^GIT binary patch$/, binaryFile],
     [/^new file mode \d+$/, newFile],
     [/^deleted file mode \d+$/, deletedFile],
     [/^index\s[\da-zA-Z]+\.\.[\da-zA-Z]+(\s(\d+))?$/, index],
